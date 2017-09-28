@@ -19,13 +19,21 @@ fi
  alias llsz='ll --sort=size -r'
 
  echo "---------------------- This is using a COPR DNF ----------------------"
- echo "DNF:"
+ echo "DNF: https://copr.fedorainfracloud.org/coprs/mhatina/DNF-Modules/"
  dnf --disablerepo=\* list installed dnf
+ echo "----------------------------------------------------------------------"
 
- echo "Image built with:"
+ echo "Image built with (KOJI composes):"
  echo -e "\t\tGIT:      \thttps://github.com/container-images/boltron-27"
  echo -e "\t\tBase:     \t$(cat latest-Fedora-Modular-27.COMPOSE_ID)"
  echo -e "\t\tBikeshed: \t$(cat latest-Fedora-Modular-Bikeshed.COMPOSE_ID)"
- echo "Image running aginst:"
+ echo "Image running aginst (KOJI Composes):"
  echo -e "\t\tBase:     \t$(curl -s https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/COMPOSE_ID)"
  echo -e "\t\tBikeshed: \t$(curl -s https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID)"
+ echo "Image running aginst (Modularity server):"
+ echo -e "  http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/..."
+ echo -e "\t\tMaven:    \tmaven-@master-20170923133034"
+ echo -e "\t\tMySQL:    \tmysql-@master-20170904221942"
+ echo -e "\t\tninja:    \tninja-@master-20170904182925"
+ echo -e "\t\tnodejs:   \tnodejs-@6-20170925160215"
+ echo -e "\t\tnodejs:   \tnodejs-@master-20170925073359"

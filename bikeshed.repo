@@ -2,8 +2,7 @@
 [fedora-modular-bikeshed]
 name=Fedora BIKESHED $releasever - $basearch MODULAR
 failovermethod=priority
-# baseurl=https://kojipkgs.fedoraproject.org/compose/Fedora-Modular-Bikeshed-20170926.n.2/compose/Server/x86_64/os/
-baseurl=https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/
+baseurl=https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/compose/Server/x86_64/os/
 enabled=1
 metadata_expire=6h
 gpgcheck=0

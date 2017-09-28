@@ -48,6 +48,8 @@ ADD perl.defaults /etc/dnf/modules.defaults.d
 # ADD CACHE-DEMO.sh /
 # ADD CLEAN-MODULES.sh /
 
+ADD mod-hack.repo /etc/yum.repos.d
+
 ADD bikeshed.repo /etc/yum.repos.d
 ADD bikeshed.defaults /etc/dnf/modules.defaults.d
 ADD fedora-26-modular.repo /etc/yum.repos.d

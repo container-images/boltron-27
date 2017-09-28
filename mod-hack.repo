@@ -1,0 +1,49 @@
+[hack-maven-_master-20170923133034]
+name=Mod repo maven-@master-20170923133034
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/maven-@master-20170923133034
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+
+
+[hack-mysql-_master-20170904221942]
+name=Mod repo mysql-@master-20170904221942
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/mysql-@master-20170904221942
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+
+
+[hack-ninja-_master-20170904182925]
+name=Mod repo ninja-@master-20170904182925
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/ninja-@master-20170904182925
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+
+
+[hack-nodejs-_6-20170925160215]
+name=Mod repo nodejs-@6-20170925160215
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/nodejs-@6-20170925160215
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+
+
+[hack-nodejs-_master-20170925073359]
+name=Mod repo nodejs-@master-20170925073359
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/nodejs-@master-20170925073359
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+

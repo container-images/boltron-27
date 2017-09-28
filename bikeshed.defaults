@@ -8,8 +8,18 @@ name=apache-commons
 stream=master
 profiles=default
 
+[autotools]
+name=autotools
+stream=master
+profiles=default
+
 [bind]
 name=bind
+stream=master
+profiles=default
+
+[cloud-init]
+name=cloud-init
 stream=master
 profiles=default
 
@@ -17,6 +27,15 @@ profiles=default
 name=fonts
 stream=master
 profiles=default
+
+[freeipa]
+name=freeipa
+stream=master
+profiles=default
+
+[hardware-support]
+name=hardware-support
+stream=master
 
 [help2man]
 name=help2man
@@ -26,6 +45,21 @@ profiles=default
 [host]
 name=host
 stream=master
+
+[httpd]
+name=httpd
+stream=master
+profiles=default
+
+[installer]
+name=installer
+stream=master
+profiles=default
+
+[java]
+name=java
+stream=master
+profiles=default
 
 [krb5]
 name=krb5
@@ -47,6 +81,11 @@ name=mysql
 stream=master
 profiles=default
 
+[networking-base]
+name=networking-base
+stream=master
+profiles=default
+
 [ninja]
 name=ninja
 stream=master
@@ -57,8 +96,23 @@ name=nodejs
 stream=6
 profiles=default
 
+[pki]
+name=pki
+stream=master
+profiles=default
+
 [postgresql]
 name=postgresql
+stream=master
+profiles=default
+
+[python2]
+name=python2
+stream=master
+profiles=default
+
+[python2-ecosystem]
+name=python2-ecosystem
 stream=master
 profiles=default
 
@@ -67,13 +121,33 @@ name=python3
 stream=master
 profiles=default
 
+[python3-ecosystem]
+name=python3-ecosystem
+stream=master
+profiles=default
+
 [resteasy]
 name=resteasy
 stream=master
 profiles=default
 
+[samba]
+name=samba
+stream=master
+profiles=default
+
+[sssd]
+name=sssd
+stream=master
+profiles=default
+
 [tomcat]
 name=tomcat
+stream=master
+profiles=default
+
+[udisks2]
+name=udisks2
 stream=master
 profiles=default
 
