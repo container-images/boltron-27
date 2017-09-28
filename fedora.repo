@@ -1,0 +1,11 @@
+# For debugging and extra packages...
+[fedora]
+name=Fedora $releasever - $basearch NON-MODULAR used for extra packages and debugging
+failovermethod=priority
+#baseurl=http://download.fedoraproject.org/pub/fedora/linux/releases/$releasever/Everything/$basearch/os/
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=fedora-$releasever&arch=$basearch
+enabled=0
+metadata_expire=6h
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$releasever-$basearch
+skip_if_unavailable=False
