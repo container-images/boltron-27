@@ -1,6 +1,7 @@
 #! /bin/sh -e
 #
 
+if [ -f /USING_COPR ]; then
  echo "---------------------- This is using a COPR DNF ----------------------"
  echo "DNF: https://copr.fedorainfracloud.org/coprs/mhatina/DNF-Modules/"
  if [ "x$1" = "xall" ]; then
@@ -11,6 +12,15 @@
  rpm -q --qf '%{name} Built on: %{buildtime:date}\n' libdnf
  rpm -q --qf '%{name}    Built on: %{buildtime:date}\n' dnf
  echo "----------------------------------------------------------------------"
+else
+ echo "------------------------------- DNF ----------------------------------"
+ if [ "x$1" = "xall" ]; then
+    dnf --showdup list dnf libdnf
+ else
+    dnf --disablerepo=\* list installed dnf libdnf
+ fi
+ echo "----------------------------------------------------------------------"
+fi
 
  echo "Image built with (KOJI composes):"
  echo -e "\t\tGIT:      \thttps://github.com/container-images/boltron-27"

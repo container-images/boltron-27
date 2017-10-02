@@ -38,7 +38,8 @@ update-force:
 tests-setup: build
 		@docker build --file=Test-Dockerfile . -t test-$(IMAGE_NAME)
 tests: tests-setup
-		@docker run --rm -it test-$(IMAGE_NAME) /image-data all | tee tests-hdr
+		@docker run --rm test-$(IMAGE_NAME) /image-data all > tests-hdr
+		@cat tests-hdr
 		@touch tests-beg
 		@echo "==============================================================="
 		@echo -n "Starting Module Install tests: "
