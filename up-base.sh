@@ -11,13 +11,18 @@ rm -f COMPOSE_ID
 $curl $modurl/COMPOSE_ID
 ID="$(cat COMPOSE_ID)"
 OID=""
-mv latest-Fedora-Modular-27.COMPOSE_ID prev-Fedora-Modular-27.COMPOSE_ID || \
-  true
-mv COMPOSE_ID latest-Fedora-Modular-27.COMPOSE_ID
 
 if [ -f prev-Fedora-Modular-27.COMPOSE_ID ]; then
 OID="$(cat prev-Fedora-Modular-27.COMPOSE_ID)"
+    if [ "x$OID" != "x$ID" ]; then
+mv latest-Fedora-Modular-27.COMPOSE_ID prev-Fedora-Modular-27.COMPOSE_ID || \
+  true
+    fi
+else
+mv latest-Fedora-Modular-27.COMPOSE_ID prev-Fedora-Modular-27.COMPOSE_ID || \
+  true
 fi
+mv COMPOSE_ID latest-Fedora-Modular-27.COMPOSE_ID
 
 rm -f STATUS
 $curl $modurl/STATUS
