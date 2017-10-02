@@ -53,7 +53,7 @@ cat tests-hdr >> /tmp/out.$$
 
 if [ "x$(fgrep pass tests-out | wc -l)" != "x$(wc -l < tests-out)" ]; then
 perl -i -pe 's/\r//g' /tmp/out.$$
-mail -n -r "$fromaddr" -s "Modularity Image $(sudo docker images jamesantill/boltron-27 --format='ID: {{.ID}}') FAIL: $(fgrep FAIL tests-out | wc -l)/$(wc -l < tests-out)" "$toaddr" < /tmp/out.$$
+mail -n -r "$fromaddr" -s "Modularity Image $(sudo docker images jamesantill/boltron-27:latest --format='ID: {{.ID}}') FAIL: $(fgrep FAIL tests-out | wc -l)/$(wc -l < tests-out)" "$toaddr" < /tmp/out.$$
 fi
 
 rm -f /tmp/out.$$
