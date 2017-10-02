@@ -12,6 +12,7 @@ ADD fedora.repo /etc/yum.repos.d
 
 # Need latest DNF
 ADD .bashrc /root
+ADD image-data /
 RUN dnf distro-sync -y dnf python3-dnf dnf-conf && dnf clean all
 RUN dnf distro-sync -y && dnf clean all
 # RUN dnf downgrade dnf-2.6.5-1.git.101.22c5c22.fc27 -y && dnf clean all
