@@ -32,6 +32,60 @@ update:
 update-force:
 		@docker build --file=$(DOCKER_FNAME) --pull --no-cache . -t $(IMAGE_NAME)
 
+tests-setup: build
+		@docker build --file=Test-Dockerfile . -t test-$(IMAGE_NAME)
+tests: tests-setup
+		@docker run --rm -it test-$(IMAGE_NAME) bash -f /root/.bashrc | tee tests-hdr
+		@touch tests-beg
+		@echo "==============================================================="
+		@echo -n "Starting Module Install tests: "
+		@date --iso=seconds --reference=tests-beg | tr T ' '
+		@echo "---------------------------------------------------------------"
+		@for i in \
+		389-ds \
+		X11-base \
+		apache-commons \
+		autotools \
+		bind \
+		cloud-init \
+		fonts \
+		freeipa \
+		hardware-support \
+		help2man \
+		host \
+		httpd \
+		installer \
+		java \
+		krb5 \
+		mariadb \
+		maven \
+		mysql \
+		networking-base \
+		ninja \
+		nodejs \
+		nodejs:master \
+		perl \
+		pki \
+		platform \
+		postgresql \
+		python2 \
+		python2-ecosystem \
+		python3 \
+		python3-ecosystem \
+		resteasy \
+		samba \
+		sssd \
+		tomcat \
+		udisks2 \
+		; do \
+		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$i ; \
+		done | tee tests-out
+		@touch tests-end
+		@echo "---------------------------------------------------------------"
+		@echo -n "FINNISHED Module Install tests: "
+		@date --iso=seconds --reference=tests-end | tr T ' '
+		@echo "---------------------------------------------------------------"
+
 run-systemd:
 	docker start $(SYSTEMD_CONTAINER_NAME) || \
 	atomic run -n $(SYSTEMD_CONTAINER_NAME) $(IMAGE_NAME)

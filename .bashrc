@@ -20,7 +20,9 @@ fi
 
  echo "---------------------- This is using a COPR DNF ----------------------"
  echo "DNF: https://copr.fedorainfracloud.org/coprs/mhatina/DNF-Modules/"
- dnf --disablerepo=\* list installed dnf
+ dnf --disablerepo=\* list installed dnf libdnf
+ rpm -q --qf '%{name} Built on: %{buildtime:date}\n' libdnf
+ rpm -q --qf '%{name}    Built on: %{buildtime:date}\n' dnf
  echo "----------------------------------------------------------------------"
 
  echo "Image built with (KOJI composes):"

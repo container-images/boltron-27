@@ -1,3 +1,9 @@
 *~
 Fedora-Modular-Docker-Base-27_Modular-*.tar.xz
 latest-Fedora-Modular-27.COMPOSE_ID
+latest-Fedora-Modular-27.STATUS
+prev-Fedora-Modular-27.COMPOSE_ID
+tests-hdr
+tests-beg
+tests-out
+tests-end

@@ -1,4 +1,4 @@
-FROM fedora-modular-docker-base-27_modular-20170927.n.0.x86_64:latest
+FROM fedora-modular-docker-base-27_modular-20171001.n.0.x86_64:latest
 
 MAINTAINER "James Antill <james.antill@redhat.com>"
 
@@ -14,6 +14,7 @@ ADD fedora.repo /etc/yum.repos.d
 ADD .bashrc /root
 RUN dnf distro-sync -y dnf python3-dnf dnf-conf && dnf clean all
 RUN dnf distro-sync -y && dnf clean all
+# RUN dnf downgrade dnf-2.6.5-1.git.101.22c5c22.fc27 -y && dnf clean all
 
 RUN echo "enabled=true" >> /etc/yum.repos.d/fedora.repo
 RUN dnf install --rpm -y \

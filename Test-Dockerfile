@@ -1,0 +1,5 @@
+FROM jamesantill/boltron-27
+
+RUN dnf module list
+
+ADD test-install.sh /
