@@ -14,9 +14,12 @@ help:
 		@echo "make old-run-systemd - Enables systemd in the container." \
 			"You may need 'setsebool -P container_manage_cgroup 1' in order to make systemd work"
 
+tag:
+		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
 build:
 		@./up-base.sh
 		@docker build --file=$(DOCKER_FNAME) . -t $(IMAGE_NAME)
+		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat test-Fedora-Modular-27.COMPOSE_ID)
 build-force:
 		@./up-base.sh
 		@docker build --file=$(DOCKER_FNAME) --no-cache . -t $(IMAGE_NAME)
