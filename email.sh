@@ -11,17 +11,24 @@ if [ -f .email.conf ]; then
 . ./.email.conf
 fi
 
+image="jamesantill/boltron-27"
+dock="sudo docker"
+dockimage="$dock images $image"
+dockrun="sudo docker run --rm -it $image"
+
 rm -f /tmp/out.$$
 echo " Auto CI for image jamesantill/boltron-27:" > /tmp/out.$$
-sudo docker images jamesantill/boltron-27 --format='ID: {{.ID}}' --no-trunc >> /tmp/out.$$
+$dockimage:latest --format='ID: {{.ID}}' --no-trunc >> /tmp/out.$$
 echo -n '    ' >> /tmp/out.$$
-sudo docker images jamesantill/boltron-27 --format='Size   : {{.Size}}' >> /tmp/out.$$
+$dockimage:latest --format='Size   : {{.Size}}' >> /tmp/out.$$
 echo -n '    ' >> /tmp/out.$$
-sudo docker images jamesantill/boltron-27 --format='Created: {{.CreatedAt}}' >> /tmp/out.$$
+$dockimage:latest --format='Created: {{.CreatedAt}}' >> /tmp/out.$$
 echo "    Base   : $(cat latest-Fedora-Modular-27.COMPOSE_ID)" >> /tmp/out.$$
 if [ -f prev-Fedora-Modular-27.COMPOSE_ID ]; then
 echo "    Prev   : $(cat prev-Fedora-Modular-27.COMPOSE_ID)" >> /tmp/out.$$
 fi
+echo "    Bike   : $($dockrun cat latest-Fedora-Modular-Bikeshed.COMPOSE_ID)" >> /tmp/out.$$
+echo "    Prev   : $($dockrun:$(cat prev-Fedora-Modular-27.COMPOSE_ID) cat latest-Fedora-Modular-Bikeshed.COMPOSE_ID)" >> /tmp/out.$$
 
 echo "" >> /tmp/out.$$
 
