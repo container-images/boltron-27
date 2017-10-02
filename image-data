@@ -3,7 +3,7 @@
 
  echo "---------------------- This is using a COPR DNF ----------------------"
  echo "DNF: https://copr.fedorainfracloud.org/coprs/mhatina/DNF-Modules/"
- if [ "x$1" = "all" ]; then
+ if [ "x$1" = "xall" ]; then
     dnf --showdup list dnf libdnf
  else
     dnf --disablerepo=\* list installed dnf libdnf
