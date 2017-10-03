@@ -29,6 +29,7 @@ run:
 
 push-james:
 		@docker push $(IMAGE_NAME)
+		@docker push $(IMAGE_NAME):latest
 
 update:
 		@docker build --file=$(DOCKER_FNAME) --pull . -t $(IMAGE_NAME)
@@ -89,6 +90,27 @@ tests: tests-setup
 		@echo -n "FINNISHED Module Install tests: "
 		@date --iso=seconds --reference=tests-end | tr T ' '
 		@echo "---------------------------------------------------------------"
+
+status:
+		@echo -n "Compose Base (remote): "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/COMPOSE_ID
+		@echo -n " "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/STATUS
+
+		@echo -n "Compose Base (local) : "
+		@cat latest-Fedora-Modular-27.COMPOSE_ID
+		@echo -n " "
+		@cat latest-Fedora-Modular-27.STATUS
+
+		@echo -n "Compose Base (prev)  : "
+		@cat prev-Fedora-Modular-27.COMPOSE_ID || echo -n "<none>"
+		@echo -n " "
+		@cat prev-Fedora-Modular-27.STATUS || echo "<none>"
+
+		@echo -n "Compose Bike: "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID
+		@echo -n " "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/STATUS
 
 run-systemd:
 	docker start $(SYSTEMD_CONTAINER_NAME) || \
