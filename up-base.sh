@@ -12,8 +12,8 @@ $curl $modurl/COMPOSE_ID
 ID="$(cat COMPOSE_ID)"
 OID=""
 
-if [ -f prev-Fedora-Modular-27.COMPOSE_ID ]; then
-OID="$(cat prev-Fedora-Modular-27.COMPOSE_ID)"
+if [ -f latest-Fedora-Modular-27.COMPOSE_ID ]; then
+OID="$(cat latest-Fedora-Modular-27.COMPOSE_ID)"
     if [ "x$OID" != "x$ID" ]; then
 mv latest-Fedora-Modular-27.COMPOSE_ID prev-Fedora-Modular-27.COMPOSE_ID || \
   true
@@ -30,6 +30,8 @@ echo "========================================================================"
 echo "Compose ID: $ID"
 echo "STATUS: $(cat STATUS)"
 echo "------------------------------------------------------------------------"
+mv latest-Fedora-Modular-27.STATUS prev-Fedora-Modular-27.STATUS || \
+  true
 mv STATUS latest-Fedora-Modular-27.STATUS
 
 fname="$(echo $ID | perl -pe 's/^Fedora-Modular-27/Fedora-Modular-Docker-Base-27_Modular/')"
