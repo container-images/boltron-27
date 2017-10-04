@@ -4,7 +4,7 @@ baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/m
 type=rpm-md
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
 
@@ -14,7 +14,7 @@ baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/m
 type=rpm-md
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
 
@@ -24,7 +24,7 @@ baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/n
 type=rpm-md
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
 
@@ -34,7 +34,7 @@ baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/n
 type=rpm-md
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
 
@@ -44,6 +44,6 @@ baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/n
 type=rpm-md
 gpgcheck=0
 repo_gpgcheck=0
-enabled=1
+enabled=0
 enabled_metadata=1
 
