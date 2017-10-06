@@ -36,5 +36,5 @@ locked = 0
 ''' % {'name' : module.name, 'stream' : stream.stream, 'version' : version.version,
     'profiles' : mods[module.name][1]})
                 fo.close()
-                print("Installing: %20s %20s %20s" % (module.name,stream.stream,version.version))
+                print("Installing: %20s %10s %16s" % (module.name,stream.stream,version.version))
 
