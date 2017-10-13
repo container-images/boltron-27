@@ -42,13 +42,15 @@ tests-setup: build
 		@docker build --file=Test-Dockerfile . -t test-$(IMAGE_NAME)
 
 tests: tests-setup
-		-@mkdir $(TESTD) 2> /dev/nul
+		@echo "==============================================================="
+		@echo "Running tests in $(TESTD)"
+		@mkdir -p $(TESTD) 2> /dev/null
 		@docker run --rm test-$(IMAGE_NAME) /image-data all > $(TESTD)/hdr
-		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
-		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
+		@docker run --rm -v $$(pwd):/mnt:z  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
+		@docker run --rm -v $$(pwd):/mnt:z  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
 		@cat $(TESTD)/hdr
 		@touch $(TESTD)/beg
-		@echo "==============================================================="
+		@echo "---------------------------------------------------------------"
 		@echo -n "Starting Module Install tests: "
 		@date --iso=seconds --reference=$(TESTD)/beg | tr T ' '
 		@echo "---------------------------------------------------------------"
