@@ -5,7 +5,8 @@
 # https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/compose/Server/x86_64/images/Fedora-Modular-Docker-Base-27_Modular-20170927.n.0.x86_64.tar.xz
 
 curl="curl --progress-bar --fail --compressed --remote-time --location -O"
-modurl="https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27"
+# modurl="https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27"
+modurl="https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed"
 
 rm -f COMPOSE_ID
 $curl $modurl/COMPOSE_ID
@@ -34,14 +35,25 @@ mv latest-Fedora-Modular-27.STATUS prev-Fedora-Modular-27.STATUS || \
   true
 mv STATUS latest-Fedora-Modular-27.STATUS
 
-fname="$(echo $ID | perl -pe 's/^Fedora-Modular-27/Fedora-Modular-Docker-Base-27_Modular/')"
+fname="$(echo $ID | perl -pe 's/^Fedora-Modular-Bikeshed/Fedora-Modular-Container-Base-Bikeshed/')"
+cname="$(echo $ID | perl -pe 's/^Fedora-Modular-Bikeshed/Fedora-Modular-Server-Bikeshed-x86_64/')"
+if [ ! -f ${cname}-CHECKSUM ]; then
+     $curl $modurl/compose/Server/x86_64/images/$cname-CHECKSUM
+     fgrep $fname $cname-CHECKSUM > $cname-CHECKSUM-$fname
+fi
 if [ ! -f ${fname}.x86_64.tar.xz ]; then
-  if $curl $modurl/compose/Server/x86_64/images/${fname}.x86_64.tar.xz; then
+echo $modurl/compose/Server/x86_64/images/${fname}.x86_64.tar.xz
+  if $curl $modurl/compose/Server/x86_64/images/${fname}.x86_64.tar.xz && \
+     sha256sum -c ${cname}-CHECKSUM-$fname; then
     echo "Got compose Docker image: $ID"
   else
-    ID="$OID"
+cp -a prev-Fedora-Modular-27.COMPOSE_ID latest-Fedora-Modular-27.COMPOSE_ID || \
+  true
+cp -a prev-Fedora-Modular-27.STATUS latest-Fedora-Modular-27.STATUS || \
+  true
     echo "Failed to get compose Docker image, using old: $OID"
-fname="$(echo $ID | perl -pe 's/^Fedora-Modular-27/Fedora-Modular-Docker-Base-27_Modular/')"
+    ID="$OID"
+fname="$(echo $ID | perl -pe 's/^Fedora-Modular-Bikeshed/Fedora-Modular-Container-Base-Bikeshed/')"
   fi
 fi
 echo "------------------------------------------------------------------------"

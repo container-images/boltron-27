@@ -16,8 +16,9 @@ help:
 
 tag:
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
-build:
+upbase:
 		@./up-base.sh
+build:
 		@docker build --file=$(DOCKER_FNAME) . -t $(IMAGE_NAME)
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
 build-force:
@@ -36,60 +37,39 @@ update:
 update-force:
 		@docker build --file=$(DOCKER_FNAME) --pull --no-cache . -t $(IMAGE_NAME)
 
+TESTD="test-$$(cat latest-Fedora-Modular-27.COMPOSE_ID)"
 tests-setup: build
 		@docker build --file=Test-Dockerfile . -t test-$(IMAGE_NAME)
+
 tests: tests-setup
-		@docker run --rm test-$(IMAGE_NAME) /image-data all > tests-hdr
-		@cat tests-hdr
-		@touch tests-beg
+		-@mkdir $(TESTD) 2> /dev/nul
+		@docker run --rm test-$(IMAGE_NAME) /image-data all > $(TESTD)/hdr
+		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
+		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
+		@cat $(TESTD)/hdr
+		@touch $(TESTD)/beg
 		@echo "==============================================================="
 		@echo -n "Starting Module Install tests: "
-		@date --iso=seconds --reference=tests-beg | tr T ' '
+		@date --iso=seconds --reference=$(TESTD)/beg | tr T ' '
 		@echo "---------------------------------------------------------------"
-		@for i in \
-		389-ds \
-		X11-base \
-		apache-commons \
-		autotools \
-		bind \
-		cloud-init \
-		fonts \
-		freeipa \
-		hardware-support \
-		help2man \
-		host \
-		httpd \
-		installer \
-		java \
-		krb5 \
-		mariadb \
-		maven \
-		mysql \
-		networking-base \
-		ninja \
-		nodejs \
-		nodejs:master \
-		perl \
-		pki \
-		platform \
-		postgresql \
-		python2 \
-		python2-ecosystem \
-		python3 \
-		python3-ecosystem \
-		resteasy \
-		samba \
-		sssd \
-		tomcat \
-		udisks2 \
-		; do \
+		@for i in $$(cat $(TESTD)/mods | awk '{ print $$1 }'); do \
 		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$i ; \
-		done | tee tests-out
-		@touch tests-end
+		for j in $$(fgrep $$i $(TESTD)/mods | awk '{ print $$4 }' | tr , " "); do \
+		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$i/$$j ; \
+		done; \
+		done | tee $(TESTD)/out
+		@touch $(TESTD)/end
 		@echo "---------------------------------------------------------------"
 		@echo -n "FINNISHED Module Install tests: "
-		@date --iso=seconds --reference=tests-end | tr T ' '
+		@date --iso=seconds --reference=$(TESTD)/end | tr T ' '
 		@echo "---------------------------------------------------------------"
+		@make tests-gather-logs
+tests-gather-logs:
+		@echo "Gathering logs for failed tests:"
+		@for i in $$(fgrep 'FAIL: DNF' $(TESTD)/out | awk '{ print $$1 }'); do \
+		j=$$(echo $$i | tr '/' '-'); echo "    $$i"; \
+		docker run --rm -it test-$(IMAGE_NAME) dnf module install -y $$i > $(TESTD)/out-$$j-1 2> $(TESTD)/out-$$j-2  || true; \
+		done
 
 status:
 		@echo -n "Compose Base (remote): "

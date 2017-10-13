@@ -3,6 +3,11 @@ name=389-ds
 stream=master
 profiles=default
 
+[X11-base]
+name=X11-base
+stream=master
+profiles=default
+
 [apache-commons]
 name=apache-commons
 stream=master
@@ -96,10 +101,20 @@ name=nodejs
 stream=6
 profiles=default
 
+[perl]
+name=perl
+stream=master
+profiles=default
+
 [pki]
 name=pki
 stream=master
 profiles=default
+
+[platform]
+name=platform
+stream=master
+profiles=buildroot
 
 [postgresql]
 name=postgresql
@@ -148,10 +163,5 @@ profiles=default
 
 [udisks2]
 name=udisks2
-stream=master
-profiles=default
-
-[X11-base]
-name=X11-base
 stream=master
 profiles=default

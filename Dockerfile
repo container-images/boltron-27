@@ -1,10 +1,10 @@
-FROM fedora-modular-docker-base-27_modular-20171002.n.1.x86_64:latest
+FROM fedora-modular-container-base-bikeshed-20171012.n.0.x86_64:latest
 
 MAINTAINER "James Antill <james.antill@redhat.com>"
 
 ENV LANG=en_US.utf8 LC_ALL=en_US.UTF-8
 
-RUN microdnf install -y dnf glibc-langpack-en && microdnf clean all
+# RUN microdnf install -y dnf glibc-langpack-en && microdnf clean all
 
 ADD _copr_mhatina-dnf.repo /etc/yum.repos.d
 
@@ -18,8 +18,15 @@ ADD image-data /
 # RUN dnf distro-sync -y && dnf clean all
 # RUN dnf downgrade dnf-2.6.5-1.git.101.22c5c22.fc27 -y && dnf clean all
 
+# ----------------------
+# HACK
+# RUN sed -i 's!metalink=https://mirrors.fedoraproject.org/metalink?repo=fedora-modular-server-bikeshed&arch=$basearch!metalink=https://mirrors.fedoraproject.org/metalink?repo=modular-bikeshed-server\&arch=$basearch!' /etc/yum.repos.d/fedora-modular-server-bikeshed.repo
+# ----------------------
+RUN dnf install -y glibc-langpack-en && dnf clean all
+
+
 RUN echo "enabled=true" >> /etc/yum.repos.d/fedora.repo
-RUN dnf install --rpm -y \
+RUN dnf remove -y vim-minimal && dnf install --allowerasing --rpm -y \
 vim-enhanced \
 nano \
 findutils \
@@ -41,7 +48,6 @@ RUN echo "enabled=false" >> /etc/yum.repos.d/fedora.repo
 # RUN dnf install -y --enablerepo=fedora lsof rsync && dnf clean all
 
 RUN mkdir /etc/dnf/modules.defaults.d
-ADD perl.defaults /etc/dnf/modules.defaults.d
 
 # ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/all.repo /etc/yum.repos.d
 # ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/all.defaults /etc/dnf/modules.defaults.d
@@ -53,12 +59,17 @@ ADD perl.defaults /etc/dnf/modules.defaults.d
 
 ADD mod-hack.repo /etc/yum.repos.d
 
-ADD bikeshed.repo /etc/yum.repos.d
+# ADD bikeshed.repo /etc/yum.repos.d
 ADD bikeshed.defaults /etc/dnf/modules.defaults.d
 ADD fedora-26-modular.repo /etc/yum.repos.d
 
 ADD latest-Fedora-Modular-27.COMPOSE_ID /
-ADD https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID /latest-Fedora-Modular-Bikeshed.COMPOSE_ID
+# ADD https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID /latest-Fedora-Modular-Bikeshed.COMPOSE_ID
+
+ADD list-modules-py3.py /
+ADD in-modules-py3.py /
+
+RUN /in-modules-py3.py
 
 # For debugging... (disabled by default)
 ADD rawhide.repo /etc/yum.repos.d

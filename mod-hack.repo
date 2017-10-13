@@ -37,6 +37,15 @@ repo_gpgcheck=0
 enabled=0
 enabled_metadata=1
 
+[hack-nodejs-_8-20171006145641]
+name=Mod repo nodejs-@8-20171006145641
+baseurl=http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/nodejs-@8-20171006145641
+type=rpm-md
+gpgcheck=0
+repo_gpgcheck=0
+enabled=0
+enabled_metadata=1
+
 
 [hack-nodejs-_master-20170925073359]
 name=Mod repo nodejs-@master-20170925073359
