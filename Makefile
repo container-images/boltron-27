@@ -43,15 +43,18 @@ tests-setup: build
 		-@mkdir $(TESTD) 2> /dev/nul
 
 tests-hdr: tests-setup
+		@echo "==============================================================="
+		@echo "Getting test data for $(TESTD)"
 		@docker run --rm test-$(IMAGE_NAME) /image-data all > $(TESTD)/hdr
 		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
 		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
 		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-repos-py3.py > $(TESTD)/repos
+		@echo "---------------------------------------------------------------"
 
 tests: tests-hdr
 		@cat $(TESTD)/hdr
 		@touch $(TESTD)/beg
-		@echo "==============================================================="
+		@echo "---------------------------------------------------------------"
 		@echo -n "Starting Module Install tests: "
 		@date --iso=seconds --reference=$(TESTD)/beg | tr T ' '
 		@echo "---------------------------------------------------------------"
