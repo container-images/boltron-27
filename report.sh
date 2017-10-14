@@ -60,11 +60,28 @@ echo "--------------------------------------------------" >> /tmp/out.$$
 diff -u $otests/mods $tests/mods >> /tmp/out.$$ || true
 fi
 
+if ! diff -u $otests/repos $tests/repos > /dev/null; then
+echo "==================================================" >> /tmp/out.$$
+printf "%30s\n" "Repos change diff" >> /tmp/out.$$
+echo "--------------------------------------------------" >> /tmp/out.$$
+diff -u $otests/repos $tests/repos >> /tmp/out.$$ || true
+else
+echo "==================================================" >> /tmp/out.$$
+printf "%30s\n" "Repos" >> /tmp/out.$$
+echo "--------------------------------------------------" >> /tmp/out.$$
+cat $tests/repos >> /tmp/out.$$
+fi
+
 if ! diff -u $otests/rpm $tests/rpm > /dev/null; then
 echo "==================================================" >> /tmp/out.$$
 printf "%30s\n" "RPM change diff" >> /tmp/out.$$
 echo "--------------------------------------------------" >> /tmp/out.$$
 diff -u $otests/rpm $tests/rpm >> /tmp/out.$$ || true
+else
+echo "==================================================" >> /tmp/out.$$
+printf "%30s\n" "RPM" >> /tmp/out.$$
+echo "--------------------------------------------------" >> /tmp/out.$$
+cat $tests/rpm >> /tmp/out.$$
 fi
 
 else
@@ -73,6 +90,14 @@ echo "==================================================" >> /tmp/out.$$
 printf "%30s\n" "Modules" >> /tmp/out.$$
 echo "--------------------------------------------------" >> /tmp/out.$$
 cat $tests/mods >> /tmp/out.$$ || true
+echo "==================================================" >> /tmp/out.$$
+printf "%30s\n" "Repos" >> /tmp/out.$$
+echo "--------------------------------------------------" >> /tmp/out.$$
+cat $tests/repos >> /tmp/out.$$
+echo "==================================================" >> /tmp/out.$$
+printf "%30s\n" "RPM" >> /tmp/out.$$
+echo "--------------------------------------------------" >> /tmp/out.$$
+cat $tests/rpm >> /tmp/out.$$
 fi
 echo "" >> /tmp/out.$$
 
