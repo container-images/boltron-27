@@ -40,12 +40,15 @@ update-force:
 TESTD="test-$$(cat latest-Fedora-Modular-27.COMPOSE_ID)"
 tests-setup: build
 		@docker build --file=Test-Dockerfile . -t test-$(IMAGE_NAME)
-
-tests: tests-setup
 		-@mkdir $(TESTD) 2> /dev/nul
+
+tests-hdr: tests-setup
 		@docker run --rm test-$(IMAGE_NAME) /image-data all > $(TESTD)/hdr
 		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
 		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
+		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-repos-py3.py > $(TESTD)/repos
+
+tests: tests-hdr
 		@cat $(TESTD)/hdr
 		@touch $(TESTD)/beg
 		@echo "==============================================================="
