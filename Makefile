@@ -46,9 +46,9 @@ tests-hdr: tests-setup
 		@echo "==============================================================="
 		@echo "Getting test data for $(TESTD)"
 		@docker run --rm test-$(IMAGE_NAME) /image-data all > $(TESTD)/hdr
-		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
-		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
-		@docker run --rm -v $$(pwd):/mnt  test-$(IMAGE_NAME) /mnt/list-repos-py3.py > $(TESTD)/repos
+		@docker run --rm -v $$(pwd):/mnt:z  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
+		@docker run --rm -v $$(pwd):/mnt:z  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
+		@docker run --rm -v $$(pwd):/mnt:z  test-$(IMAGE_NAME) /mnt/list-repos-py3.py > $(TESTD)/repos
 		@echo "---------------------------------------------------------------"
 
 tests: tests-hdr
