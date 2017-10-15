@@ -81,6 +81,11 @@ name=maven
 stream=master
 profiles=default
 
+[meson]
+name=meson
+stream=master
+profiles=default
+
 [mysql]
 name=mysql
 stream=master
