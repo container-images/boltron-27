@@ -44,3 +44,57 @@ defined module can be installed, can be run via:
 
    $ make tests
 
+Checking specific F27 modules
+-----------------------------
+
+The main purpose of the Boltron F27 image is to provide a locally available
+pre-release testing platform for the individual modules included in the F27
+Modular Server release.
+
+The most recent test logs for the actual F27 Modular Server builds can be
+found [here](https://ci.centos.org/job/fedora-qa-compose_tester/lastSuccessfulBuild/artifact/compose_tester/mod_install_results.log).
+
+Before checking the behaviour of a module in the image, confirm that it has
+been built successfully by going to
+`https://mbs.fedoraproject.org/module-build-service/1/module-builds/?order_desc_by=id&name=<name>`
+and looking for the state of the builds with the highest ids (state=5 <-> successful).
+(The reverse ordering by ID ensures that the most recent builds appear on the
+first page of the results).
+
+If this indicates that the module builds themselves are failing, investigate further by
+[building the module locally](https://docs.pagure.org/modularity/development/building-modules/building-local.html)
+and (once the module is building successfully locally) resubmitting the build to the
+[Fedora module build service](https://docs.pagure.org/modularity/development/building-modules/building-infra.html).
+
+Assuming that the module is building correctly in the Fedora infrastructure,
+check it's working as expected by running through the following commands in
+the Boltron F27 container image:
+
+1. Ensure the listed stream names are as expected (For the initial module set,
+   the expected stream names are listed in the
+   [F27 Content Tracking repository](https://github.com/fedora-modularity/f27-content-tracking)):
+
+       # dnf module list <name>
+
+2. Check that the module is enabled by default and installs correctly (this
+   may fail if the module doesn’t have valid profiles defined, for example:
+   `Error: No such profile: ...`):
+
+       # dnf module install <name>
+
+3. If the module has more than one stream, try to switch streams (and back):
+
+       # dnf module install <name>:<stream>
+
+4. Remove the module (this will uninstall the module's packages, but leave the
+   stream enabled, which means the packages from the module will still be
+   available for dnf to install, both directly and implicitly as a dependency
+   of another package):
+
+       # dnf module remove <name>
+
+5. Disable the module (this will make the packages contained in the module
+   unavailable to dnf, preventing the installation of other packages that
+   depend on the packages provided by that module):
+
+       # dnf module disable <name>
