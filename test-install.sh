@@ -1,6 +1,6 @@
 #! /bin/sh -e
 
-printf "%24s => " $1
+printf "%38s => " $1
 dnf history > /tmp/ohist
 if dnf module install -y "$1" 2> /dev/null > /dev/null; then
   dnf history > /tmp/nhist
