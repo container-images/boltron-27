@@ -37,7 +37,6 @@ tar \
 bzip2 \
 xz \
 which \
-mc \
 less \
  && dnf clean all
 RUN echo "enabled=false" >> /etc/yum.repos.d/fedora.repo
