@@ -6,9 +6,9 @@ DOCKER_FNAME := Dockerfile
 SELINUX := :z
 
 help:
-		@echo "make build - Build a new docker image."
-		@echo "make update - Build a new docker image, updating baseruntime."
-		@echo "make update-force - Build a new docker image, from scratch."
+		@echo "make build - Build and locally tag a new docker image."
+		@echo "make upbase - Download and locally import the latest base image"
+		@echo "make build-force - Combine the upbase & build commands"
 		@echo "make run - Run the new image with bash."
 		@echo "make push-james - Push the new build to $(IMAGE_NAME)."
 		@echo "make run-systemd - Enables systemd in the container, relies on atomic-cli." \
