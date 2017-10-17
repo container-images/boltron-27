@@ -39,9 +39,6 @@ You should now be able to build the image locally:
 
     $ make build
 
-(Later rebuilds may require a `make upbase && make update` to pick up newer
-pre-release images from Fedora)
-
 The basic image tests, which run through and check that each currently
 defined module can be installed, can be run via:
 
