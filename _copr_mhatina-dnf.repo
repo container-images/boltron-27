@@ -1,6 +1,6 @@
 [mhatina-dnf-modularity-nightly]
 name=Copr repo for dnf-modularity-nightly owned by mhatina
-baseurl=https://copr-be.cloud.fedoraproject.org/results/mhatina/dnf-modularity-nightly/fedora-$releasever-$basearch/
+baseurl=https://copr-be.cloud.fedoraproject.org/results/mhatina/dnf-modularity-nightly/fedora-27-$basearch/
 type=rpm-md
 skip_if_unavailable=True
 gpgcheck=1
