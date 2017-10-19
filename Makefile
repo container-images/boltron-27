@@ -20,7 +20,10 @@ tag:
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
 upbase:
 		@./up-base.sh
-build:
+build-mbs-cli:
+		@go get gopkg.in/yaml.v2
+		@go build mbs-cli.go
+build: build-mbs-cli
 		@docker build --file=$(DOCKER_FNAME) . -t $(IMAGE_NAME)
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
 build-force:
