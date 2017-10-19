@@ -44,8 +44,8 @@ defined module can be installed, can be run via:
 
     $ make tests
 
-Checking specific F27 modules
------------------------------
+Checking released modules
+-------------------------
 
 The main purpose of the Boltron F27 image is to provide a locally available
 pre-release testing platform for the individual modules included in the F27
@@ -99,3 +99,26 @@ the Boltron F27 container image:
    depend on the packages provided by that module):
 
        # dnf module disable <name>
+
+Checking pre-release modules
+----------------------------
+
+Module releases may take a day or more to become available in the default
+image, so the Boltron image provides a helper script to download built
+modules directly from the Module Build Service and incorporate them into
+the currently running image. For example:
+
+    # /LOCAL.sh postgresql:9.6:20171018083530
+
+This will download the binary artifacts for that particular build of the
+PostreSQL 9.6 stream, set up a local repository for them (including the
+module metadata), enable that repository, and then install the module with
+its default profile.
+
+A non-default profile can be requested by appending the profile name to the
+build identifer, separated by a `/`:
+
+    # /LOCAL.sh postgresql:9.6:20171018083530/client
+
+The list of currently build modules and their identifiers can be found at
+http://modularity.fedorainfracloud.org/modularity/mbs/.
