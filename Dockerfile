@@ -1,4 +1,4 @@
-FROM fedora-modular-container-base-bikeshed-20171012.n.0.x86_64:latest
+FROM fedora-modular-container-base-bikeshed-20171015.n.0.x86_64:latest
 
 MAINTAINER "James Antill <james.antill@redhat.com>"
 

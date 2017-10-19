@@ -1,4 +1,4 @@
-IMAGE_NAME := jamesantill/boltron-27
+IMAGE_NAME := jamesantill/boltron-bikeshed
 SYSTEMD_CONTAINER_NAME := boltron
 DOCKER_FNAME := Dockerfile
 # DOCKER_FNAME := Dockerfile-with-local-dnf
@@ -92,6 +92,11 @@ status:
 		@echo -n " "
 		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/STATUS
 
+		@echo -n "Compose Bike (remote): "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID
+		@echo -n " "
+		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/STATUS
+
 		@echo -n "Compose Base (local) : "
 		@cat latest-Fedora-Modular-27.COMPOSE_ID
 		@echo -n " "
@@ -101,11 +106,6 @@ status:
 		@cat prev-Fedora-Modular-27.COMPOSE_ID || echo -n "<none>"
 		@echo -n " "
 		@cat prev-Fedora-Modular-27.STATUS || echo "<none>"
-
-		@echo -n "Compose Bike: "
-		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID
-		@echo -n " "
-		@curl https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/STATUS
 
 run-systemd:
 	docker start $(SYSTEMD_CONTAINER_NAME) || \
