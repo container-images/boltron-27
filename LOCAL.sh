@@ -6,8 +6,10 @@ for i in $@; do
         continue
     fi
 
-    mkdir /LOCAL/$i
-    cd /LOCAL/$i
+    d="$(echo $i | tr / _)"
+
+    mkdir /LOCAL/MOD-$d
+    cd /LOCAL/MOD-$d
 
     /mbs-cli dlmod $i
 
@@ -17,10 +19,14 @@ for i in $@; do
 done
 
 cd /LOCAL
-/m2c.py merge all $@
+/m2c.py merge all MOD-*
 createrepo all
 mv all/modmd all/modules.yaml
 modifyrepo all/modules.yaml all/repodata
 rm -rf /var/cache/dnf/local*
+echo "=================================================="
+printf "%30s\n" "Modules"
+echo "--------------------------------------------------"
 /list-modules-py3.py
+echo "--------------------------------------------------"
 dnf -y module install $@
