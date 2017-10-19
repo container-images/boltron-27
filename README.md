@@ -2,7 +2,7 @@ Interim images for Fedora 27 Modular Server
 ===========================================
 
 This repo defines the Dockerfile, build script, and self-tests for
-https://hub.docker.com/r/jamesantill/boltron-27/
+https://hub.docker.com/r/jamesantill/boltron-bikeshed/
 
 It's a temporary measure to allow initial image and module testing to proceed
 while the full automated pipeline for
@@ -14,12 +14,12 @@ Using the image
 
 To run the pre-built image locally, do:
 
-    $ docker run --rm -it jamesantill/boltron-27 bash
+    $ docker run --rm -it jamesantill/boltron-bikeshed bash
 
 This will give you an environment with DNF module management commands and
 several modules available. To see the list of available modules, run:
 
-    $ docker run --rm -it jamesantill/boltron-27 /list-modules-py3.py
+    $ docker run --rm -it jamesantill/boltron-bikeshed /list-modules-py3.py
 
 Building the image locally
 --------------------------
