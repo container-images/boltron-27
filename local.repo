@@ -1,0 +1,9 @@
+[local]
+name=Local repo. for modulae testing from MBS. Eg. RUN: /LOCAL.sh @postgresql:9.6:20171018083530
+baseurl=file:///LOCAL/all
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=0
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
