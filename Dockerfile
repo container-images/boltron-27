@@ -43,12 +43,15 @@ PyYAML \
  && dnf clean all
 RUN echo "enabled=false" >> /etc/yum.repos.d/fedora.repo
 
+# This Requires the MBS Go binary (along with createrepo/PyYAML above) ...
 RUN mkdir -p /LOCAL/all
 RUN createrepo /LOCAL/all
 ADD m2c.py /
 ADD local.repo /etc/yum.repos.d
 ADD mbs-cli /
 ADD LOCAL.sh /
+# ...end of MBS
+
 
 # # For module defaults
 # ADD fedmod-comps-modmd.repo /etc/yum.repos.d
