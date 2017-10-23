@@ -92,6 +92,10 @@ ADD rawhide.repo /etc/yum.repos.d
 #    dnf -y install --rpm https://ttomecek.fedorapeople.org/modular-nodejs-6-10-2/nodejs-6.10.2-3.module_52f77d55.x86_64.rpm && \
 #    dnf -y install --rpm https://ttomecek.fedorapeople.org/modular-nodejs-6-10-2/npm-3.10.10-1.6.10.2.3.module_52f77d55.x86_64.rpm
 
+RUN sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-modular-server-bikeshed.repo
+ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/bikey-mcbikeshed-2017-10-23.repo /etc/yum.repos.d
+
+
 CMD ['/bin/bash']
 
 LABEL RUN "/usr/bin/docker run -e container=docker -d" \

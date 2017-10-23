@@ -1,4 +1,4 @@
-FROM jamesantill/boltron-27
+FROM jamesantill/boltron-bikeshed
 
 RUN dnf module list
 
