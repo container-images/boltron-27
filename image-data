@@ -46,3 +46,9 @@ if [ -f /etc/yum.repos.d/mod-hack.repo ] && \
  echo -e "\t\tnodejs:   \tnodejs-@6-20171006145641"
  echo -e "\t\tnodejs:   \tnodejs-@master-20170925073359"
 fi
+
+if [ -f /etc/yum.repos.d/bikey-mcbikeshed-*.repo ] && \
+   fgrep -q enabled=1 /etc/yum.repos.d/bikey-mcbikeshed-* ; then
+ echo "Image running aginst (Modularity server):"
+ echo -e "  http://modularity.fedorainfracloud.org/modularity/$(basename /etc/yum.repos.d/bikey-mcbikeshed-*.repo)"
+fi
