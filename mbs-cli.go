@@ -43,7 +43,7 @@ func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
 			continue
 		}
 		if !done && b.Meta.Pages > 1 {
-			for num := 2; num < b.Meta.Pages; num++ {
+			for num := 2; num <= b.Meta.Pages; num++ {
 				pwg.Add(1)
 				url := fmt.Sprintf("%s?per_page=%d&page=%d", MBS_URL, b.Meta.Per_page, num)
 				go func() { bchan <- builds(url); pwg.Done() }()
