@@ -54,6 +54,7 @@ tests-hdr: tests-setup
 		@docker run --rm -v $$(pwd):/mnt$(SELINUX)  test-$(IMAGE_NAME) /mnt/list-modules-py3.py > $(TESTD)/mods
 		@docker run --rm -v $$(pwd):/mnt$(SELINUX)  test-$(IMAGE_NAME) /mnt/list-rpm.sh > $(TESTD)/rpm
 		@docker run --rm -v $$(pwd):/mnt$(SELINUX)  test-$(IMAGE_NAME) /mnt/list-repos-py3.py > $(TESTD)/repos
+		@docker run --rm -v $$(pwd):/mnt$(SELINUX)  test-$(IMAGE_NAME) /mnt/list-multi-mod-rpms-py3.py > $(TESTD)/mmrpms
 		@echo "---------------------------------------------------------------"
 
 tests: tests-hdr
