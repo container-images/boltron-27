@@ -20,9 +20,34 @@ for module in base.repo_module_dict.values():
                     rn2m[n] = []
                 rn2m[n].append(d)
 
+
+# Output by module...
+m2rn = {}
+for n in rn2m:
+    mods = set(map(lambda x: x[0], sorted(rn2m[n])))
+    if len(mods) <= 1:
+        continue
+    # Sort by biggest module intersection first.
+    m = (99-len(rn2m[n]), ",".join(mods))
+    if m not in m2rn:
+        m2rn[m] = set()
+    m2rn[m].add(n)
+if not m2rn:
+    sys.exit(0)
+xx = "=" * 20
+print(xx, "Modules with duplicate rpms", xx)
+for m in sorted(m2rn):
+    print("ERROR Duplicate RPMs in modules: ", m[1])
+    num = 0
+    for n in sorted(m2rn[m]):
+        num += 1
+        print("%4d" % num, n)
+
+print(xx, "RPMs in multiple modules", xx)
 errs = 0
 for n in sorted(rn2m):
-    if len(rn2m[n]) <= 1:
+    mods = set(map(lambda x: x[0], sorted(rn2m[n])))
+    if len(mods) <= 1:
         continue
     errs += 1
     print("ERROR (%d) rpm (%s) in %d modules:" % (errs, n, len(rn2m[n])))
