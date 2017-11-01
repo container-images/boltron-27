@@ -11,10 +11,10 @@ base.fill_sack()
 # base.repo_module_dict.install(['platform:master/buildroot', 'networking-base:master/default', 'hardware-support:master', 'python3:master/default', 'host:master'])
 
 
-mods = {'platform' :         ('master', 'buildroot'),
-        'networking-base' :  ('f27', 'default'),
+mods = {'platform' :         ('master', ''),
+        'networking-base' :  ('f27', ''),
         'hardware-support' : ('f27', ''),
-        'python3' :          ('master', 'default'),
+        'python3' :          ('master', ''),
         'host' :             ('f27', ''),
 }
 

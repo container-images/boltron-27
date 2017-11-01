@@ -58,7 +58,7 @@ RUN dnf install -y glibc-langpack-en && dnf clean all
 # RUN dnf install -y fedora-modular-defaults-server && dnf clean all
 # RUN dnf install -y --enablerepo=fedora lsof rsync && dnf clean all
 
-RUN mkdir /etc/dnf/modules.defaults.d
+# RUN mkdir /etc/dnf/modules.defaults.d
 
 # ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/all.repo /etc/yum.repos.d
 # ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/all.defaults /etc/dnf/modules.defaults.d
@@ -71,7 +71,7 @@ RUN mkdir /etc/dnf/modules.defaults.d
 # ADD mod-hack.repo /etc/yum.repos.d
 
 # ADD bikeshed.repo /etc/yum.repos.d
-ADD base-27.defaults /etc/dnf/modules.defaults.d
+# ADD base-27.defaults /etc/dnf/modules.defaults.d
 # ADD fedora-26-modular.repo /etc/yum.repos.d
 
 ADD latest-Fedora-Modular-27.COMPOSE_ID /
@@ -80,7 +80,7 @@ ADD latest-Fedora-Modular-27.COMPOSE_ID /
 ADD list-modules-py3.py /
 ADD in-modules-py3.py /
 
-RUN /in-modules-py3.py
+# RUN /in-modules-py3.py
 
 # For debugging... (disabled by default)
 # ADD rawhide.repo /etc/yum.repos.d
