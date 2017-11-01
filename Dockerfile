@@ -1,4 +1,4 @@
-FROM fedora-modular-container-base-bikeshed-20171015.n.0.x86_64:latest
+FROM fedora-modular-container-base-27_modular-20171031.n.1.x86_64:latest
 
 MAINTAINER "James Antill <james.antill@redhat.com>"
 
@@ -25,32 +25,32 @@ ADD image-data /
 RUN dnf install -y glibc-langpack-en && dnf clean all
 
 
-RUN echo "enabled=true" >> /etc/yum.repos.d/fedora.repo
-RUN dnf remove -y vim-minimal && dnf install --allowerasing --rpm -y \
-vim-enhanced \
-nano \
-findutils \
-openssh-clients \
-man-pages \
-wget \
-tar \
-bzip2 \
-xz \
-which \
-less \
-createrepo \
-PyYAML \
- && dnf clean all
-RUN echo "enabled=false" >> /etc/yum.repos.d/fedora.repo
+# RUN echo "enabled=true" >> /etc/yum.repos.d/fedora.repo
+# RUN dnf remove -y vim-minimal && dnf install --allowerasing --rpm -y \
+# vim-enhanced \
+# nano \
+# findutils \
+# openssh-clients \
+# man-pages \
+# wget \
+# tar \
+# bzip2 \
+# xz \
+# which \
+# less \
+# createrepo \
+# PyYAML \
+ # && dnf clean all
+# RUN echo "enabled=false" >> /etc/yum.repos.d/fedora.repo
 
-# This Requires the MBS Go binary (along with createrepo/PyYAML above) ...
-RUN mkdir -p /LOCAL/all
-RUN createrepo /LOCAL/all
-ADD m2c.py /
-ADD local.repo /etc/yum.repos.d
-ADD mbs-cli /
-ADD LOCAL.sh /
-# ...end of MBS
+# # This Requires the MBS Go binary (along with createrepo/PyYAML above) ...
+# RUN mkdir -p /LOCAL/all
+# RUN createrepo /LOCAL/all
+# ADD m2c.py /
+# ADD local.repo /etc/yum.repos.d
+# ADD mbs-cli /
+# ADD LOCAL.sh /
+# # ...end of MBS
 
 
 # # For module defaults
@@ -68,11 +68,11 @@ RUN mkdir /etc/dnf/modules.defaults.d
 # ADD CACHE-DEMO.sh /
 # ADD CLEAN-MODULES.sh /
 
-ADD mod-hack.repo /etc/yum.repos.d
+# ADD mod-hack.repo /etc/yum.repos.d
 
 # ADD bikeshed.repo /etc/yum.repos.d
-ADD bikeshed.defaults /etc/dnf/modules.defaults.d
-ADD fedora-26-modular.repo /etc/yum.repos.d
+ADD base-27.defaults /etc/dnf/modules.defaults.d
+# ADD fedora-26-modular.repo /etc/yum.repos.d
 
 ADD latest-Fedora-Modular-27.COMPOSE_ID /
 # ADD https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-Bikeshed/COMPOSE_ID /latest-Fedora-Modular-Bikeshed.COMPOSE_ID
@@ -83,7 +83,7 @@ ADD in-modules-py3.py /
 RUN /in-modules-py3.py
 
 # For debugging... (disabled by default)
-ADD rawhide.repo /etc/yum.repos.d
+# ADD rawhide.repo /etc/yum.repos.d
 
 #hacking in older version of nodejs to demonstrate updates
 #RUN dnf -y module enable nodejs-f26 && \
@@ -92,20 +92,9 @@ ADD rawhide.repo /etc/yum.repos.d
 #    dnf -y install --rpm https://ttomecek.fedorapeople.org/modular-nodejs-6-10-2/nodejs-6.10.2-3.module_52f77d55.x86_64.rpm && \
 #    dnf -y install --rpm https://ttomecek.fedorapeople.org/modular-nodejs-6-10-2/npm-3.10.10-1.6.10.2.3.module_52f77d55.x86_64.rpm
 
-RUN sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-modular-server-bikeshed.repo
-ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/bikey-mcbikeshed-2017-10-23.1.repo /etc/yum.repos.d
-RUN dnf distro-sync -y && dnf clean all
+# RUN sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-modular-server-bikeshed.repo
+# ADD http://modularity.fedorainfracloud.org/modularity/hack-fedora-f27-mods/bikey-mcbikeshed-2017-10-25.1.repo /etc/yum.repos.d
+# RUN dnf distro-sync -y && dnf clean all
 
 
 CMD ['/bin/bash']
-
-LABEL RUN "/usr/bin/docker run -e container=docker -d" \
-		'-v $PWD/machine-id:/etc/machine-id:Z' \
-		'--stop-signal="SIGRTMIN+3"' \
-		"--tmpfs /tmp --tmpfs /run" \
-		"--security-opt=seccomp:unconfined" \
-		"-v /sys/fs/cgroup/systemd:/sys/fs/cgroup/systemd" \
-		"--name NAME" \
-		"IMAGE /sbin/init"
-
-

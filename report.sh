@@ -20,7 +20,7 @@ if [ ! -d $tests ]; then
 fi
 
 rm -f /tmp/out.$$
-echo " Auto CI for image jamesantill/boltron-27:" > /tmp/out.$$
+echo " Auto CI for image $image:" > /tmp/out.$$
 $dockimage:latest --format='ID: {{.ID}}' --no-trunc >> /tmp/out.$$
 echo -n '    ' >> /tmp/out.$$
 $dockimage:latest --format='Size   : {{.Size}}' >> /tmp/out.$$

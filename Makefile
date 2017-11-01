@@ -1,4 +1,4 @@
-IMAGE_NAME := jamesantill/boltron-bikeshed
+IMAGE_NAME := jamesantill/boltron-27
 SYSTEMD_CONTAINER_NAME := boltron
 DOCKER_FNAME := Dockerfile
 # DOCKER_FNAME := Dockerfile-with-local-dnf

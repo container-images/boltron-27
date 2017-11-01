@@ -5,7 +5,7 @@
 # https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/compose/Server/x86_64/images/Fedora-Modular-Docker-Base-27_Modular-20170927.n.0.x86_64.tar.xz
 
 curl="curl --progress-bar --fail --compressed --remote-time --location -O"
-modtype="Bikeshed"
+modtype="27"
 modurl="https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-$modtype"
 dualimages=true
 
@@ -36,7 +36,8 @@ mv latest-Fedora-Modular-27.STATUS prev-Fedora-Modular-27.STATUS || \
   true
 mv STATUS latest-Fedora-Modular-27.STATUS
 
-fname="$(echo $ID | perl -pe 's/^Fedora-Modular-([^-]+)/Fedora-Modular-Container-Base-$1/')"
+# Fedora-Modular-Container-Base-27_Modular-20171025.n.3.x86_64.tar.xz 
+fname="$(echo $ID | perl -pe 's/^Fedora-Modular-([^-]+)/Fedora-Modular-Container-Base-$1_Modular/')"
 cname="$(echo $ID | perl -pe 's/^Fedora-Modular-([^-]+)/Fedora-Modular-Server-$1-x86_64/')"
 if [ ! -f ${cname}-CHECKSUM ]; then
      $curl $modurl/compose/Server/x86_64/images/$cname-CHECKSUM

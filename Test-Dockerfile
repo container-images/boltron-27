@@ -1,4 +1,6 @@
-FROM jamesantill/boltron-bikeshed
+FROM jamesantill/boltron-27
+
+RUN sed -i 's!metalink=https://mirrors.fedoraproject.org/metalink?repo=modular-fedora-server-f$releasever&arch=$basearch!baseurl=https://kojipkgs.fedoraproject.org/compose/latest-Fedora-Modular-27/compose/Server/$basearch/os/!' /etc/yum.repos.d/fedora-modular-server.repo
 
 RUN dnf module list
 

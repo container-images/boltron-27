@@ -12,10 +12,10 @@ base.fill_sack()
 
 
 mods = {'platform' :         ('master', 'buildroot'),
-        'networking-base' :  ('master', 'default'),
-        'hardware-support' : ('master', ''),
+        'networking-base' :  ('f27', 'default'),
+        'hardware-support' : ('f27', ''),
         'python3' :          ('master', 'default'),
-        'host' :             ('master', ''),
+        'host' :             ('f27', ''),
 }
 
 for module in base.repo_module_dict.values():
