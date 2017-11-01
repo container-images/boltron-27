@@ -4,8 +4,13 @@ Fedora-Modular-Docker-Base-27_Modular-*.tar.xz
 Fedora-Modular-Container-Base-Bikeshed-*.n.*.x86_64.tar.xz
 Fedora-Modular-Server-Bikeshed-x86_64-*.n.*-CHECKSUM
 Fedora-Modular-Server-Bikeshed-x86_64-*.n.*-CHECKSUM-Fedora-Modular-Container-Base-Bikeshed-*.n.*
+Fedora-Modular-Container-Base-27_Modular-*.n.*.x86_64.tar.xz
+Fedora-Modular-Server-27-x86_64-*.n.*-CHECKSUM
+Fedora-Modular-Server-27-x86_64-*.n.*-CHECKSUM-Fedora-Modular-Container-Base-27-*.n.*
+Fedora-Modular-Server-27-x86_64-*.n.*-CHECKSUM-Fedora-Modular-Container-Base-27_Modular-*.n.*
 
 test-Fedora-Modular-Bikeshed-*.n.*
+test-Fedora-Modular-27-*.n.*
 latest-Fedora-Modular-27.COMPOSE_ID
 latest-Fedora-Modular-27.STATUS
 prev-Fedora-Modular-27.COMPOSE_ID
