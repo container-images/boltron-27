@@ -108,7 +108,7 @@ profiles=default
 
 [perl]
 name=perl
-stream=master
+stream=5.26
 profiles=default
 
 [pki]
@@ -153,7 +153,7 @@ profiles=default
 
 [samba]
 name=samba
-stream=master
+stream=4.7
 profiles=default
 
 [sssd]
