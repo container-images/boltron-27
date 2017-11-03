@@ -1,6 +1,6 @@
 [389-ds]
 name=389-ds
-stream=1.2
+stream=1.3
 profiles=default
 
 [X11-base]
@@ -86,6 +86,11 @@ name=meson
 stream=master
 profiles=default
 
+[mongodb]
+name=mongodb
+stream=master
+profiles=default
+
 [mysql]
 name=mysql
 stream=master
@@ -148,6 +153,11 @@ profiles=default
 
 [resteasy]
 name=resteasy
+stream=master
+profiles=default
+
+[ruby]
+name=ruby
 stream=master
 profiles=default
 
