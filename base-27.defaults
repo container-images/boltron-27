@@ -35,7 +35,7 @@ profiles=default
 
 [freeipa]
 name=freeipa
-stream=master
+stream=4.6
 profiles=default
 
 [hardware-support]
