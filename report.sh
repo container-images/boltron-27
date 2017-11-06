@@ -111,13 +111,6 @@ cat $tests/hdr >> /tmp/out.$$
 
 perl -i -pe 's/\r//g' /tmp/out.$$
 
-if [ "x$1" = "xemail" ]; then
-if [ "x$(fgrep pass $tests/out | wc -l)" != "x$(wc -l < $tests/out)" ]; then
-mail -n -r "$fromaddr" -s "Modularity Image $(sudo docker images jamesantill/boltron-27:latest --format='ID: {{.ID}}') FAIL: $(fgrep FAIL $tests/out | wc -l)/$(wc -l < $tests/out)" "$toaddr" < /tmp/out.$$
-fi
-rm -f /tmp/out.$$
-exit 0
-fi
 
 for i in $(fgrep 'FAIL: DNF' $tests/out | awk '{ print $1 }'); do
     j="$(echo $i | tr '/' '-')"
@@ -137,6 +130,14 @@ echo "--------------------------------------------------" >> /tmp/out.$$
 cat $tests/out-$j-2  >> /tmp/out.$$
 fi
 done
+
+if [ "x$1" = "xemail" ]; then
+if [ "x$(fgrep pass $tests/out | wc -l)" != "x$(wc -l < $tests/out)" ]; then
+mail -n -r "$fromaddr" -s "Modularity Image $(sudo docker images jamesantill/boltron-27:latest --format='ID: {{.ID}}') FAIL: $(fgrep FAIL $tests/out | wc -l)/$(wc -l < $tests/out)" "$toaddr" < /tmp/out.$$
+fi
+rm -f /tmp/out.$$
+exit 0
+fi
 
 if [ "x$1" = "xemail-force" ]; then
 mail -n -r "$fromaddr" -s "Modularity Image $(sudo docker images jamesantill/boltron-27:latest --format='ID: {{.ID}}') FAIL: $(fgrep FAIL $tests/out | wc -l)/$(wc -l < $tests/out)" "$toaddr" < /tmp/out.$$
