@@ -109,7 +109,6 @@ echo "" >> /tmp/out.$$
 echo " Full image used data:" >> /tmp/out.$$
 cat $tests/hdr >> /tmp/out.$$
 
-perl -i -pe 's/\r//g' /tmp/out.$$
 
 
 for i in $(fgrep 'FAIL: DNF' $tests/out | awk '{ print $1 }'); do
@@ -130,6 +129,8 @@ echo "--------------------------------------------------" >> /tmp/out.$$
 cat $tests/out-$j-2  >> /tmp/out.$$
 fi
 done
+
+perl -i -pe 's/\r//g' /tmp/out.$$
 
 if [ "x$1" = "xemail" ]; then
 if [ "x$(fgrep pass $tests/out | wc -l)" != "x$(wc -l < $tests/out)" ]; then
