@@ -108,7 +108,7 @@ profiles=default
 
 [nodejs]
 name=nodejs
-stream=6
+stream=8
 profiles=default
 
 [perl]
