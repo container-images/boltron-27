@@ -143,7 +143,7 @@ profiles=default
 
 [python3]
 name=python3
-stream=master
+stream=3.6
 profiles=default
 
 [python3-ecosystem]
