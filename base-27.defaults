@@ -66,10 +66,10 @@ name=java
 stream=8
 profiles=default
 
-[krb5]
-name=krb5
-stream=1
-profiles=default
+[libtom]
+name=libtom
+stream=master
+profiles=
 
 [mariadb]
 name=mariadb
