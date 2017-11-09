@@ -4,7 +4,10 @@ while true; do
 
     if ./up-base-check.sh; then
         ./up-base.sh && \
-        sudo make build push-james tests && \
+        sudo make build && \
+        sudo make push-james && \
+        ./ping-ci.sh && \
+        sudo make tests && \
         ./report.sh email
     fi
 
