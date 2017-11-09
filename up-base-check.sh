@@ -19,6 +19,7 @@ OID="$(cat latest-Fedora-Modular-27.COMPOSE_ID)"
     if [ "x$OID" != "x$ID" ]; then
         exit 0
     fi
+rm -f COMPOSE_ID
         exit 1
 fi
         exit 0
