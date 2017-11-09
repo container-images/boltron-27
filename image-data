@@ -52,3 +52,11 @@ if [ -f /etc/yum.repos.d/bikey-mcbikeshed-*.repo ] && \
  echo "Image running aginst (Modularity server):"
  echo -e "  http://modularity.fedorainfracloud.org/modularity/$(basename /etc/yum.repos.d/bikey-mcbikeshed-*.repo)"
 fi
+
+if rpm -q coreutils-single > /dev/null; then
+
+    echo " ** NOTE: coreutils-single is installed, this will make things fail."
+    echo " **       you can fix it by: dnf --allowerasing install coreutils"
+    echo " **       at which point @freeipa will install."
+
+fi
