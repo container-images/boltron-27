@@ -1,5 +1,17 @@
 #! /bin/sh
 
+tmb=5m
+tme=20m
+
+if [ "x$1" != "x" ]; then
+    tmb="$1"
+fi
+
+if [ "x$2" != "x" ]; then
+    tme="$2"
+fi
+
+tm="$tmb"
 while true; do
 
     if ./up-base-check.sh; then
@@ -9,8 +21,9 @@ while true; do
         ./ping-ci.sh && \
         sudo make tests && \
         ./report.sh email
+        tm="$tme"
     fi
 
-    echo "Sleep for 20m: $(date --iso=minutes | tr T ' ')"
-    sleep 20m
+    echo "Sleep for $tm: $(date --iso=minutes | tr T ' ')"
+    sleep $tm
 done
