@@ -52,7 +52,7 @@ pre-release testing platform for the individual modules included in the F27
 Modular Server release.
 
 The most recent test logs for the actual F27 Modular Server builds can be
-found [here](https://ci.centos.org/job/fedora-qa-compose_tester/lastCompletedBuild/artifact/compose_tester/mod_install_results.log), with the error details
+found [here](https://ci.centos.org/job/fedora-qa-compose-tests/lastCompletedBuild/artifact/compose_tester/mod_install_results.log), with the error details
 [here](https://ci.centos.org/job/fedora-qa-compose-tests/lastCompletedBuild/artifact/compose-tests/error.log).
 
 Before checking the behaviour of a module in the image, confirm that it has
