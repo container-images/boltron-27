@@ -23,15 +23,26 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// MBS_URL Instance of MBS to connect to
-const MBS_URL = "http://mbs.fedoraproject.org/module-build-service/1/module-builds/"
+// We go Scheme / host / MBS_API
+
+// MBS_Scheme How to connet to MBS
+const MBS_Scheme = "http://"
+
+// MBS_API Instance of MBS to connect to
+const MBS_API = "/module-build-service/1/module-builds/"
 
 var verbose_flag bool
 var arch_flag string
+var host_flag string
 
 func init() {
 	flag.BoolVar(&verbose_flag, "verbose", false, "Print rpms")
 	flag.StringVar(&arch_flag, "arch", "<arch>", "Arch for rpm URLs (hack)")
+	flag.StringVar(&host_flag, "host", "mbs.fedoraproject.org", "Host running MBS")
+}
+
+func MBSURL() string {
+	return MBS_Scheme + host_flag + MBS_API
 }
 
 func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
@@ -45,7 +56,7 @@ func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
 		if !done && b.Meta.Pages > 1 {
 			for num := 2; num <= b.Meta.Pages; num++ {
 				pwg.Add(1)
-				url := fmt.Sprintf("%s?per_page=%d&page=%d", MBS_URL, b.Meta.Per_page, num)
+				url := fmt.Sprintf("%s?per_page=%d&page=%d", MBSURL(), b.Meta.Per_page, num)
 				go func() { bchan <- builds(url); pwg.Done() }()
 			}
 			go func() { pwg.Wait(); close(bchan) }()
@@ -125,8 +136,8 @@ func main() {
 	schan := make(chan *Build)
 
 	wg.Add(1)
-	go func() { bchan <- builds(fmt.Sprintf("%s?per_page=100", MBS_URL)) }()
-	// go func() { bchan <- builds(MBS_URL) }()
+	go func() { bchan <- builds(fmt.Sprintf("%s?per_page=100", MBSURL())) }()
+	// go func() { bchan <- builds(MBSURL()) }()
 	go worker_all(bchan, vchan, &wg)
 	go sort_builds(schan, vchan)
 	go func() { wg.Wait(); close(vchan) }()
