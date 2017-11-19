@@ -69,7 +69,6 @@ profiles=default
 [libtom]
 name=libtom
 stream=master
-profiles=
 
 [mariadb]
 name=mariadb
@@ -139,7 +138,6 @@ profiles=default
 [python2-ecosystem]
 name=python2-ecosystem
 stream=master
-profiles=default
 
 [python3]
 name=python3
@@ -149,7 +147,6 @@ profiles=default
 [python3-ecosystem]
 name=python3-ecosystem
 stream=master
-profiles=default
 
 [resteasy]
 name=resteasy
