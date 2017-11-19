@@ -64,13 +64,15 @@ tests: tests-hdr
 		@echo -n "Starting Module Install tests: "
 		@date --iso=seconds --reference=$(TESTD)/beg | tr T ' '
 		@echo "---------------------------------------------------------------"
-		@for i in $$(cat $(TESTD)/mods | awk '{ print $$1 ":" $$2 }'); do \
+		@for i in $$(cat $(TESTD)/mods | awk '{ print $$1 ":" $$2 ":" $$4 }'); do \
 		n="$$(echo $$i | cut -f1 -d :)"; \
 		s="$$(echo $$i | cut -f2 -d :)"; \
+		ps="$$(echo $$i | cut -f3 -d :)"; \
+		[ "x$$ps" = "x" ] && continue ; \
 		[ "x$$n" != "x$$lastn" ] && \
 		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$n ; \
 		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$n:$$s ; \
-		for p in $$(fgrep $$n $(TESTD)/mods | fgrep " $$s " | awk '{ print $$4 }' | tr , " "); do \
+		for p in $$(echo $$ps | tr , " "); do \
 		[ "x$$n" != "x$$lastn" ] && \
 		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$n/$$p ; \
 		docker run --rm -it test-$(IMAGE_NAME) /test-install.sh $$n:$$s/$$p ; \
