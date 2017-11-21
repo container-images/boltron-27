@@ -73,7 +73,7 @@ profiles=default
 
 [libtom]
 name=libtom
-stream=master
+stream=f27
 
 [mariadb]
 name=mariadb
