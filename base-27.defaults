@@ -137,7 +137,7 @@ profiles=default
 
 [python2]
 name=python2
-stream=master
+stream=2.7
 profiles=default
 
 [python2-ecosystem]
