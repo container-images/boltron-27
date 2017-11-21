@@ -23,6 +23,11 @@ name=bind
 stream=9
 profiles=default
 
+[boost]
+name=boost
+stream=1.64
+profiles=development
+
 [cloud-init]
 name=cloud-init
 stream=f27
