@@ -142,7 +142,7 @@ profiles=default
 
 [python2-ecosystem]
 name=python2-ecosystem
-stream=master
+stream=f27
 
 [python3]
 name=python3
@@ -151,7 +151,7 @@ profiles=default
 
 [python3-ecosystem]
 name=python3-ecosystem
-stream=master
+stream=f27
 
 [resteasy]
 name=resteasy
