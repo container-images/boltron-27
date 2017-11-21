@@ -173,6 +173,11 @@ name=sssd
 stream=master
 profiles=default
 
+[system-tools]
+name=system-tools
+stream=f27
+profiles=default
+
 [tomcat]
 name=tomcat
 stream=master
