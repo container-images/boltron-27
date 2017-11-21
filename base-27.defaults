@@ -97,7 +97,7 @@ profiles=default
 
 [mysql]
 name=mysql
-stream=f27
+stream=5.7
 profiles=default
 
 [networking-base]
