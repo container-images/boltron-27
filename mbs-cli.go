@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"flag"
@@ -16,6 +17,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -31,21 +33,30 @@ const MBS_Scheme = "http://"
 // MBS_API Instance of MBS to connect to
 const MBS_API = "/module-build-service/1/module-builds/"
 
+const MBSDefaultHost = "mbs.fedoraproject.org"
+
+const (
+	cacheListTime = time.Minute * 8
+	cacheIDTime   = time.Hour * 24 * 7
+)
+
+var refresh_flag bool
 var verbose_flag bool
 var arch_flag string
 var host_flag string
 
 func init() {
+	flag.BoolVar(&refresh_flag, "refresh", false, "Force refresh main list")
 	flag.BoolVar(&verbose_flag, "verbose", false, "Print rpms")
 	flag.StringVar(&arch_flag, "arch", "<arch>", "Arch for rpm URLs (hack)")
-	flag.StringVar(&host_flag, "host", "mbs.fedoraproject.org", "Host running MBS")
+	flag.StringVar(&host_flag, "host", MBSDefaultHost, "Host running MBS")
 }
 
 func MBSURL() string {
 	return MBS_Scheme + host_flag + MBS_API
 }
 
-func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
+func worker_all(bchan chan *MBSAPI, vchan chan *Build, cvchan chan int, wg *sync.WaitGroup) {
 	done := false
 
 	var pwg sync.WaitGroup
@@ -56,10 +67,14 @@ func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
 		if !done && b.Meta.Pages > 1 {
 			for num := 2; num <= b.Meta.Pages; num++ {
 				pwg.Add(1)
-				url := fmt.Sprintf("%s?per_page=%d&page=%d", MBSURL(), b.Meta.Per_page, num)
+				url := fmt.Sprintf("%s?per_page=%d&page=%d",
+					MBSURL(), b.Meta.Per_page, num)
 				go func() { bchan <- builds(url); pwg.Done() }()
 			}
-			go func() { pwg.Wait(); close(bchan) }()
+			go func() {
+				pwg.Wait()
+				close(bchan)
+			}()
 			done = true
 		}
 
@@ -70,14 +85,20 @@ func worker_all(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
 				continue
 			}
 			wg.Add(1)
-			go func() { vchan <- build(item.ID); wg.Done() }()
+			go func() {
+				if cvchan != nil {
+					cvchan <- item.ID
+				}
+				vchan <- build(item.ID)
+				wg.Done()
+			}()
 		}
 	}
-
 	wg.Done()
+
 }
 
-func worker_iter(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
+func worker_iter(bchan chan *MBSAPI, vchan chan *Build, cvchan chan int, wg *sync.WaitGroup) {
 	for b := range bchan {
 		if b == nil {
 			continue
@@ -90,7 +111,13 @@ func worker_iter(bchan chan *MBSAPI, vchan chan *Build, wg *sync.WaitGroup) {
 				continue
 			}
 			wg.Add(1)
-			go func() { vchan <- build(item.ID); wg.Done() }()
+			go func() {
+				if cvchan != nil {
+					cvchan <- item.ID
+				}
+				vchan <- build(item.ID)
+				wg.Done()
+			}()
 		}
 
 		if b.Meta.Next == "" {
@@ -131,16 +158,80 @@ func main() {
 		args = []string{"list"}
 	}
 
-	bchan := make(chan *MBSAPI, 4)
-	vchan := make(chan *Build, 4)
+	bchan := make(chan *MBSAPI, 64)
+	vchan := make(chan *Build, 64)
+	var cvchan chan int
 	schan := make(chan *Build)
 
+	var cached_list bool
+	var list_data []byte
+	path := cachePath()
+	if path == "" {
+		// Nothing
+	} else if !refresh_flag {
+		fpath := path + "/list"
+		file, err := os.Open(fpath)
+		if err == nil {
+			defer file.Close()
+			fi, err := file.Stat()
+			if err == nil && time.Since(fi.ModTime()) <= cacheListTime {
+				list_data, err = ioutil.ReadAll(file)
+				if err == nil {
+					cached_list = true
+				}
+			}
+		}
+	}
+
+	if !cached_list { // Try to create a cache for next time
+		cached_list = false
+		os.MkdirAll(path, os.ModePerm)
+		fpath := path + "/list"
+		file, err := os.Create(fpath)
+		if err == nil {
+			cvchan = make(chan int)
+			go func() {
+				for ID := range cvchan {
+					fmt.Fprintf(file, "%d\n", ID)
+				}
+				file.Close()
+			}()
+		}
+	}
+
 	wg.Add(1)
-	go func() { bchan <- builds(fmt.Sprintf("%s?per_page=100", MBSURL())) }()
-	// go func() { bchan <- builds(MBSURL()) }()
-	go worker_all(bchan, vchan, &wg)
+	if !cached_list {
+		go func() { bchan <- builds(fmt.Sprintf("%s?per_page=100", MBSURL())) }()
+		// go func() { bchan <- builds(MBSURL()) }()
+		go worker_all(bchan, vchan, cvchan, &wg)
+	} else {
+		go func() {
+			close(bchan)
+			scanner := bufio.NewScanner(bytes.NewReader(list_data))
+
+			for scanner.Scan() {
+				line := scanner.Text()
+				num64, err := strconv.ParseInt(line, 10, 64)
+				if err != nil {
+					continue
+				}
+				num := int(num64)
+
+				wg.Add(1)
+				go func() { vchan <- build(num); wg.Done() }()
+			}
+			wg.Done()
+		}()
+	}
 	go sort_builds(schan, vchan)
-	go func() { wg.Wait(); close(vchan) }()
+	go func() {
+		wg.Wait()
+		if cvchan != nil {
+			close(cvchan)
+		}
+
+		close(vchan)
+	}()
 
 	if false {
 	} else if args[0] == "dlmod" {
@@ -486,12 +577,24 @@ func rm_files(path string) {
 	wg.Wait()
 }
 
-func cmd_uncache(vchan chan *Build, args *[]string) {
+func cachePath() string {
 	usr, err := user.Current()
 	if err != nil {
+		return ""
+	}
+	return buildCachePath(usr)
+}
+
+func buildCachePath(usr *user.User) string {
+	path := fmt.Sprintf("%s/.cache/mbs-cli/%s", usr.HomeDir, host_flag)
+	return path
+}
+
+func cmd_uncache(vchan chan *Build, args *[]string) {
+	path := cachePath()
+	if path == "" {
 		return
 	}
-	path := fmt.Sprintf("%s/.cache/mbs-cli", usr.HomeDir)
 	rm_files(path)
 	path += "/git"
 	rm_files(path)
@@ -511,7 +614,7 @@ func build_diff(pbres, bres *Build) string {
 	var path string
 
 	if err == nil && usr.HomeDir != "" {
-		path = fmt.Sprintf("%s/.cache/mbs-cli/git/%d...%d.diff", usr.HomeDir,
+		path = fmt.Sprintf("%s/git/%d...%d.diff", buildCachePath(usr),
 			pbres.ID, bres.ID)
 		file, err := os.Open(path) // Should timeout?
 		if err == nil {
@@ -974,19 +1077,22 @@ func build(bid int) *Build {
 	var cached bool
 
 	if err == nil && usr.HomeDir != "" {
-		path = fmt.Sprintf("%s/.cache/mbs-cli/%d", usr.HomeDir, bid)
+		path = fmt.Sprintf("%s/ID/%d", buildCachePath(usr), bid)
 		file, err := os.Open(path) // Should timeout?
 		if err == nil {
 			defer file.Close()
-			body, err = ioutil.ReadAll(file)
-			if err == nil {
-				cached = true
+			fi, err := file.Stat()
+			if err == nil && time.Since(fi.ModTime()) <= cacheIDTime {
+				body, err = ioutil.ReadAll(file)
+				if err == nil {
+					cached = true
+				}
 			}
 		}
 	}
 
 	if !cached {
-		url := "http://mbs.fedoraproject.org/module-build-service/1/module-builds/"
+		url := MBSURL()
 		url += fmt.Sprintf("%d?verbose=1", bid)
 		found := false
 		for i := 0; i < 4; i++ {
