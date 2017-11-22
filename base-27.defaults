@@ -82,7 +82,7 @@ profiles=default
 
 [maven]
 name=maven
-stream=master
+stream=f27
 profiles=default
 
 [meson]
@@ -92,7 +92,7 @@ profiles=default
 
 [mongodb]
 name=mongodb
-stream=master
+stream=3.4
 profiles=default
 
 [mysql]
@@ -147,7 +147,6 @@ stream=f27
 [python3]
 name=python3
 stream=3.6
-profiles=default
 
 [python3-ecosystem]
 name=python3-ecosystem
@@ -155,12 +154,12 @@ stream=f27
 
 [resteasy]
 name=resteasy
-stream=master
+stream=3.0
 profiles=default
 
 [ruby]
 name=ruby
-stream=master
+stream=2.4
 profiles=default
 
 [samba]
@@ -170,7 +169,7 @@ profiles=default
 
 [sssd]
 name=sssd
-stream=master
+stream=1.16
 profiles=default
 
 [system-tools]
@@ -180,7 +179,7 @@ profiles=default
 
 [tomcat]
 name=tomcat
-stream=master
+stream=8.0
 profiles=default
 
 [udisks2]
