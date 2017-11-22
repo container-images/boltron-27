@@ -175,7 +175,7 @@ profiles=default
 
 [system-tools]
 name=system-tools
-stream=f27
+stream=2017.0
 profiles=default
 
 [tomcat]
