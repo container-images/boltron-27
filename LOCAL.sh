@@ -14,6 +14,16 @@ else
   fi
 fi
 
+if ! rpm -q python2-rpm > /dev/null; then
+  echo "You need to install python2-rpm."
+  exit 1
+fi
+
+if ! rpm -q PyYAML > /dev/null; then
+  echo "You need to install PyYAML."
+  exit 1
+fi
+
 for i in $@; do
     if [ "x$i" = "all" ]; then
         continue
