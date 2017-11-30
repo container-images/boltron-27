@@ -26,9 +26,9 @@ for i in $@; do
 
     /mbs-cli dlmod $i
 
-    createrepo .
+    $cre .
     mv *.modmd modules.yaml
-    modifyrepo modules.yaml repodata
+    $mod modules.yaml repodata
 done
 
 cd /LOCAL
