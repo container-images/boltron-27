@@ -4,6 +4,7 @@ DOCKER_FNAME := Dockerfile
 # DOCKER_FNAME := Dockerfile-with-local-dnf
 # Remove this if you don't have SELinux mounting patches, *sigh* ...
 SELINUX := :z
+GO=go
 
 help:
 		@echo "make build - Build and locally tag a new docker image."
@@ -20,9 +21,10 @@ tag:
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)
 upbase:
 		@./up-base.sh
-mbs-cli:
-		@go get gopkg.in/yaml.v2
-		@go build mbs-cli.go
+mbs-cli: mbs-cli.go
+		@$(GO) get gopkg.in/yaml.v2
+		@echo Building MBS-CLI
+		@$(GO) build mbs-cli.go
 build: mbs-cli
 		@docker build --file=$(DOCKER_FNAME) . -t $(IMAGE_NAME)
 		@docker tag $(IMAGE_NAME) $(IMAGE_NAME):$$(cat latest-Fedora-Modular-27.COMPOSE_ID)

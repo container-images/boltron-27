@@ -596,8 +596,8 @@ func cmd_uncache(vchan chan *Build, args *[]string) {
 		return
 	}
 	rm_files(path)
-	path += "/git"
-	rm_files(path)
+	rm_files(path + "/ID")
+	rm_files(path + "/git")
 }
 
 func prnt_rpm_html(out io.Writer, rpm Rpm) {
