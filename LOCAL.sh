@@ -1,5 +1,17 @@
 #! /bin/sh -e
 
+if rpm -q createrepo > /dev/null; then
+  cre=createrepo
+  mod=modifyrepo
+else
+  if rpm -q createrepo_c > /dev/null; then
+    cre=createrepo_c
+    mod=modifyrepo_c
+  else
+
+    echo "You need to install createrepo or createrepo_c."
+    exit 1
+fi
 
 for i in $@; do
     if [ "x$i" = "all" ]; then
@@ -8,7 +20,7 @@ for i in $@; do
 
     d="$(echo $i | tr / _)"
 
-    mkdir /LOCAL/MOD-$d
+    mkdir -p /LOCAL/MOD-$d
     cd /LOCAL/MOD-$d
 
     /mbs-cli dlmod $i
@@ -20,9 +32,9 @@ done
 
 cd /LOCAL
 /m2c.py merge all MOD-*
-createrepo all
+$cre all
 mv all/modmd all/modules.yaml
-modifyrepo all/modules.yaml all/repodata
+$mod all/modules.yaml all/repodata
 rm -rf /var/cache/dnf/local*
 echo "=================================================="
 printf "%30s\n" "Modules"
