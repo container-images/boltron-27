@@ -11,6 +11,7 @@ else
 
     echo "You need to install createrepo or createrepo_c."
     exit 1
+  fi
 fi
 
 for i in $@; do
